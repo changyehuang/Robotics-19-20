@@ -247,21 +247,22 @@ run(RAMP, -100);
 sleep(500);
 run(RAMP, 0);
 
-drive(100, 100);
-sleep(300);
-drive(-100, -100);
-sleep(250);
+
+//drive(100, 100);
+//sleep(300);
+//drive(-100, -100);
+//sleep(250);
 
 drive(0, 0);
 
 run(INTAKE_L, INTAKE_R, -300);
-pidDrive(2.6, .6, .6);
+pidDrive(2.5, .6, .6);
 
 drive(0,0);
 
 sleep(100);
 
-pidDrive(-1.8, 2, 2);
+pidDrive(-2, 1.5, 1.5);
 
 
 run(INTAKE_L, INTAKE_R, 0);
@@ -278,12 +279,13 @@ pidDrive(.5, 1, 1);
 
 drive(0,0);
 
-run(INTAKE_L, INTAKE_R, 0);
+run(INTAKE_L, INTAKE_R, 100);
 
 run(RAMP, 100);
 sleep(500);
 //run(INTAKE_L, INTAKE_R, 100);
 
+run(INTAKE_L, INTAKE_R, 0);
 
 
 sleep(2000);
