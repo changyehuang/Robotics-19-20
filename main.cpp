@@ -161,20 +161,70 @@ if( pid_Ki != 0 )
 
             // send to motor
             drive(pidDrive * speed1, pidDrive * speed2);
-            Brain.Screen.print(pidDrive);
-            Brain.Screen.print(pidError);
-            Brain.Screen.print(", ");
-            Brain.Screen.print(pidIntegral);
-            Brain.Screen.print(", ");
-            Brain.Screen.print(pidDerivative);
-            Brain.Screen.print(", ");
-            Brain.Screen.print(encoderValue);
-            Brain.Screen.newLine();
-
             }
 
 }
 
+
+void pidRamp(){
+RAMP.resetRotation();
+double distance = -3.0;
+
+static float PID_INTEGRAL_LIMIT = 50;
+static int PID_DRIVE_MAX = 127;
+static int PID_DRIVE_MIN = -127;
+
+float  encoderValue = 0;
+float  pid_Kp = 2.0;
+float  pid_Ki = 0.04;
+float  pid_Kd = 0.0;
+
+float  pidError = 1000;
+float  pidLastError = 0;
+float  pidIntegral = 0;
+float  pidDerivative = 0;
+float  pidDrive;
+
+pidLastError  = 0;
+pidIntegral   = 0;
+
+while(fabs(pidError) > 0.03){
+
+encoderValue = -RAMP.rotation(vex::rotationUnits (rev));
+
+
+pidError = encoderValue - distance;
+
+
+if( pid_Ki != 0 )
+                {
+                // If we are inside controlable window then integrate the error
+                if( fabs(pidError) < PID_INTEGRAL_LIMIT )
+                    pidIntegral = pidIntegral + pidError;
+                else
+                    pidIntegral = 0;
+                }
+            else
+                pidIntegral = 0;
+
+            // calculate the derivative
+            pidDerivative = pidError - pidLastError;
+            pidLastError  = pidError;
+
+            // calculate drive
+            pidDrive = (pid_Kp * pidError) + (pid_Ki * pidIntegral) + (pid_Kd * pidDerivative);
+
+            // limit drive
+            if( pidDrive > PID_DRIVE_MAX )
+                pidDrive = PID_DRIVE_MAX;
+            if( pidDrive < PID_DRIVE_MIN )
+                pidDrive = PID_DRIVE_MIN;
+
+            // send to motor
+            run(RAMP, pidDrive );
+            }
+        sleep(750);
+}
 
 /*
 //drive for set distance, choose sign
@@ -385,47 +435,13 @@ if(SPEED_L > 30 || SPEED_L < -30)
          runMotor(LeftMotorMid, motorLeft - lowSpeedLeft);
 */
 
-
-
-
-
-
-
-if(controller1.ButtonLeft.pressing()){
-  sideDrive(100);
-} else if(controller1.ButtonRight.pressing()){
-  sideDrive(-100);
-} else
-{
-  run(DRIVE_RF, (controller1.Axis2.value()) * 1.5 / slowDrive);
-  run(DRIVE_LF, (controller1.Axis3.value()) * 1.5 / slowDrive);
-  run(DRIVE_LB, (controller1.Axis3.value()) * 1.5 / slowDrive);
-  run(DRIVE_RB, (controller1.Axis2.value()) * 1.5 / slowDrive);
-}
   
+  run(DRIVE_RF, (controller1.Axis3.value() - controller1.Axis4.value() - controller1.Axis1.value() ) * 1.5 / slowDrive);
+  run(DRIVE_LB, (controller1.Axis3.value() - controller1.Axis4.value() + controller1.Axis1.value()) * 1.5 / slowDrive);
 
+  run(DRIVE_LF, (controller1.Axis3.value() + controller1.Axis4.value() + controller1.Axis1.value()) * 1.5 / slowDrive);
+  run(DRIVE_RB, (controller1.Axis3.value() + controller1.Axis4.value() - controller1.Axis1.value()) * 1.5 / slowDrive);
 
-if(controller1.ButtonDown.pressing()){
-run(RAMP, -100);
-sleep(400);
-motorBrake(RAMP);
-
-//raise arm and ramp 2
-run(ARM, 100);
-sleep(600);
-
-//keep arm there for a second
-motorBrake(ARM);
-sleep(300);
-
-run(ARM, -100);
-run(RAMP, 100);
-sleep(400);
-run(RAMP, 0);
-sleep(200);
-
-
-}
 
 if(controller1.ButtonA.pressing())
 {
@@ -450,7 +466,7 @@ if(controller1.ButtonR1.pressing()){
 
 
 if(controller1.ButtonX.pressing()){
-  run(RAMP, 100);
+  pidRamp();
 }else if(controller1.ButtonB.pressing()){
   run(RAMP, -200);
 }else{
