@@ -19,18 +19,19 @@ vex::competition Competition;
 // define your global instances of motors and other devices here
 
 vex::motor DRIVE_RF = vex::motor(PORT1, true);
-vex::motor DRIVE_RB = vex::motor(PORT2, true);
-vex::motor DRIVE_LF = vex::motor(PORT4, false);
-vex::motor DRIVE_LB = vex::motor(PORT5, false);
+vex::motor DRIVE_RB = vex::motor(PORT4, true);
+vex::motor DRIVE_LF = vex::motor(PORT2, false);
+vex::motor DRIVE_LB = vex::motor(PORT3, false);
 
 vex::motor RAMP = vex::motor(PORT19, false);
 
 vex::pwm_out Led1 = vex::pwm_out(Brain.ThreeWirePort.A);
 
-vex::motor INTAKE_R = vex::motor(PORT14);
-vex::motor INTAKE_L = vex::motor(PORT6, true);
 
-vex::motor ARM = vex::motor(PORT12);
+vex::motor INTAKE_R = vex::motor(PORT6);
+vex::motor INTAKE_L = vex::motor(PORT7, true);
+
+vex::motor ARM = vex::motor(PORT5);
 
 
 
@@ -227,14 +228,6 @@ if( pid_Ki != 0 )
         sleep(750);
 }
 
-/*
-//drive for set distance, choose sign
-void drive(int left, int right, int distance){
-  DRIVE_L.startRotateFor(distance/WHEEL_CIRCUMFERENCE, rev, left * 100, rpm);
-  DRIVE_R.rotateFor(distance/WHEEL_CIRCUMFERENCE, rev, right * 100, rpm);
-  this_thread::sleep_for(200);
-}
-*/
 
 /*
 double getVelocity(){
@@ -275,8 +268,7 @@ void autonomous( void ) {
   // ..........................................................................
   // Insert autonomous user code here.
   // ..........................................................................
-Led1.state(100,vex::percentUnits::pct);
-  
+
 std::string side = "blue";
 
 
@@ -300,10 +292,7 @@ sleep(500);
 run(RAMP, 0);
 
 
-//drive(100, 100);
-//sleep(300);
-//drive(-100, -100);
-//sleep(250);
+
 
 drive(0, 0);
 
@@ -353,50 +342,6 @@ run(DRIVE_RF, 0);
   run(DRIVE_LB, 0);
   run(DRIVE_RB, 0);
 
-/*
-//drive(1, 1, 135);
-
-drive(-100, -100, 1000);
-
-drive(100, 100, 1000);
-
-//shake arm
-run(ARM, 100);
-sleep(300);
-run(ARM, 0);
-run(ARM, -100);
-sleep(300);
-
-
-//run(RAMP_R, -100);
-//sleep(400);
-//motorBrake(RAMP_R);
-
-
-//raise arm and ramp 2
-run(ARM, 100);
-sleep(600);
-
-//keep arm there for a second
-motorBrake(ARM);
-sleep(300);
-
-
-//run(INTAKE_R, INTAKE_L, 100);
-//sleep(500);
-//run(INTAKE_R, INTAKE_L, 0);
-
-
-//run(ARM_R, ARM_L, -100);
-//sleep(300);
-run(ARM, 0);
-
-
-//run(RAMP_R, 100);
-//sleep(400);
-//run(RAMP_R, 0);
-//sleep(200);
-*/
 
 
 }
@@ -413,6 +358,7 @@ run(ARM, 0);
 
 void usercontrol( void ) {
   // User control code here, inside the loop
+   int count = 0;
   while (1) {
     // This is the main execution loop for the user control program.
     // Each time through the loop your program should update motor + servo 
@@ -422,24 +368,57 @@ void usercontrol( void ) {
     // Insert user code here. This is where you use the joystick values to 
     // update your motors, etc.
     // ........................................................................
-/*
-int SPEED_L = controller1.Axis3.value();
-int SPEED_R = controller1.Axis2.value();
+Led1.state(100,vex::percentUnits::pct);
 
-if(SPEED_L > 30 || SPEED_L < -30)
-       {
-           if(SPEED_L > 30)
-              slowDrive = abs(slowDrive);
-           if(SPEED_L < -30)
-               lowSpeedLeft = abs(lowSpeedLeft) * -1;
-        
-         runMotor(LeftMotor, motorLeft - lowSpeedLeft);
-         runMotor(LeftMotorMid, motorLeft - lowSpeedLeft);
-*/
 
-  Led1.state(100,vex::percentUnits::pct);
-    
-  run(DRIVE_RF, (controller1.Axis3.value() - controller1.Axis4.value() - controller1.Axis1.value() ) * 1.5 / slowDrive);
+
+count++;
+//std::string s = "Spiral1.png";
+ 
+//std::string picString;
+//picString = pic;
+
+
+ 
+ //s.replace(6, 1, picString); 
+// s.replace(7, 4, ".png");
+//const char* picture = s.c_str();
+if(count == 1)
+  Brain.Screen.drawImageFromFile( "Spiral1.png" , 0, 0);
+if(count == 2)
+  Brain.Screen.drawImageFromFile( "Spiral2.png" , 0, 0);
+if(count == 3)
+  Brain.Screen.drawImageFromFile( "Spiral3.png" , 0, 0);
+if(count == 4)
+  Brain.Screen.drawImageFromFile( "Spiral4.png" , 0, 0);
+if(count == 5)
+  Brain.Screen.drawImageFromFile( "Spiral5.png" , 0, 0);
+if(count == 6)
+  Brain.Screen.drawImageFromFile( "Spiral6.png" , 0, 0);
+if(count == 7)
+  Brain.Screen.drawImageFromFile( "Spiral7.png" , 0, 0);
+if(count == 8)
+  Brain.Screen.drawImageFromFile( "Spiral8.png" , 0, 0);
+if(count == 9)
+  Brain.Screen.drawImageFromFile( "Spiral9.png" , 0, 0);
+if(count == 10)
+  Brain.Screen.drawImageFromFile( "Spiral10.png" , 0, 0);
+if(count == 11)
+  Brain.Screen.drawImageFromFile( "Spiral11.png" , 0, 0);
+if(count == 12)
+  Brain.Screen.drawImageFromFile( "Spiral12.png" , 0, 0);
+
+
+
+
+  //Brain.Screen.print(picture);
+  //Brain.Screen.print(s[6] + s[7] + s[8]);
+ // Brain.Screen.newLine();
+if(count == 13)
+count = 0;
+
+ 
+  run(DRIVE_RF, (controller1.Axis3.value() - controller1.Axis4.value() - controller1.Axis1.value()) * 1.5 / slowDrive);
   run(DRIVE_LB, (controller1.Axis3.value() - controller1.Axis4.value() + controller1.Axis1.value()) * 1.5 / slowDrive);
 
   run(DRIVE_LF, (controller1.Axis3.value() + controller1.Axis4.value() + controller1.Axis1.value()) * 1.5 / slowDrive);
