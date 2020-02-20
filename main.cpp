@@ -25,6 +25,7 @@ vex::motor DRIVE_LB = vex::motor(PORT5, false);
 
 vex::motor RAMP = vex::motor(PORT19, false);
 
+vex::pwm_out Led1 = vex::pwm_out(Brain.ThreeWirePort.A);
 
 vex::motor INTAKE_R = vex::motor(PORT14);
 vex::motor INTAKE_L = vex::motor(PORT6, true);
@@ -274,7 +275,8 @@ void autonomous( void ) {
   // ..........................................................................
   // Insert autonomous user code here.
   // ..........................................................................
-
+Led1.state(100,vex::percentUnits::pct);
+  
 std::string side = "blue";
 
 
@@ -435,7 +437,8 @@ if(SPEED_L > 30 || SPEED_L < -30)
          runMotor(LeftMotorMid, motorLeft - lowSpeedLeft);
 */
 
-  
+  Led1.state(100,vex::percentUnits::pct);
+    
   run(DRIVE_RF, (controller1.Axis3.value() - controller1.Axis4.value() - controller1.Axis1.value() ) * 1.5 / slowDrive);
   run(DRIVE_LB, (controller1.Axis3.value() - controller1.Axis4.value() + controller1.Axis1.value()) * 1.5 / slowDrive);
 
