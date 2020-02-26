@@ -2,49 +2,24 @@
 /*                                                                            */
 /*    Module:       main.cpp                                                  */
 /*    Author:       C:\Users\alexa                                            */
-/*    Created:      Sat Sep 07 2019                                           */
+/*    Created:      Tue Feb 25 2020                                           */
 /*    Description:  V5 project                                                */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+
+// ---- START VEXCODE CONFIGURED DEVICES ----
+// Robot Configuration:
+// [Name]               [Type]        [Port(s)]
+//           
+// ---- END VEXCODE CONFIGURED DEVICES ----
+
 #include "vex.h"
-#include <cstdlib>
 #include "ButtonClass.h"
 
 using namespace vex;
 
-// A global instance of vex::brain used for printing to the V5 brain screen
+competition Competition;
 
-// A global instance of vex::competition
-vex::competition Competition;
-
-
-
-// define your global instances of motors and other devices here
-
-vex::motor DRIVE_RF = vex::motor(PORT1, true);
-vex::motor DRIVE_RB = vex::motor(PORT7, true);
-vex::motor DRIVE_LF = vex::motor(PORT2, false);
-vex::motor DRIVE_LB = vex::motor(PORT10, false);
-
-vex::motor RAMP = vex::motor(PORT19, false);
-
-vex::pwm_out Led1 = vex::pwm_out(Brain.ThreeWirePort.B);
-
-vex::encoder encoderL = vex::encoder(Brain.ThreeWirePort.F);
-vex::encoder encoderR = vex::encoder(Brain.ThreeWirePort.C);
-vex::encoder encoderB = vex::encoder(Brain.ThreeWirePort.D);
-
-vex::motor INTAKE_R = vex::motor(PORT6);
-vex::motor INTAKE_L = vex::motor(PORT8, true);
-
-vex::motor ARM = vex::motor(PORT9);
-
-
-
-
-vex::controller controller1 = vex::controller();
-
-//vex::accelerometer accelerometer1 = vex::accelerometer(triport::port );
 
 double slowDrive = 0.7, slowInt;
 
@@ -542,16 +517,11 @@ if(autoSide == 1){
     run(INTAKE_R, 0);
 }
 }
-
 */
 /*
 run(RAMP, 100);
 sleep(500);
-
 run(RAMP, 0);
-
-
-
 run(INTAKE_L, INTAKE_R, 300);
 sleep(1000);
 run(INTAKE_L, INTAKE_R, 0);
@@ -559,16 +529,10 @@ run(ARM, 200);
 sleep(800);
 run(ARM, -200);
 sleep(600);
-
 run(RAMP, -100);
 sleep(300);
 run(RAMP, 0);
-
-
-
-
 drive(0, 0);
-
 run(INTAKE_L, INTAKE_R, -300);
 */
 pidDrive(2.5, .6, .6);
@@ -590,28 +554,17 @@ drive(0,0);
 /*
 //THE TURNING PART
 pidDrive(-1.3, 1, -1);
-
-
 drive(0,0);
-
 pidDrive(.5, 1, 1);
-
 drive(0,0);
-
 run(INTAKE_L, INTAKE_R, 100);
-
 run(RAMP, 100);
 sleep(500);
 //run(INTAKE_L, INTAKE_R, 100);
-
 run(INTAKE_L, INTAKE_R, 0);
-
-
 sleep(2000);
 run(RAMP, 0);
-
 drive(-50, -50);
-
 run(INTAKE_L, INTAKE_R, 0);
 sleep(1000);
 */
@@ -676,7 +629,6 @@ if(count == 11)
   Brain.Screen.drawImageFromFile( "Spiral11.png" , 0, 0);
 if(count == 12)
   Brain.Screen.drawImageFromFile( "Spiral12.png" , 0, 0);
-
 */
 if(count == 13)
 count = 0;
@@ -744,16 +696,10 @@ if(controller1.ButtonL1.pressing()){
   }
 }
 
-//
-// Main will set up the competition functions and callbacks.
-//
-
-
 int main() {
-    //Set up callbacks for autonomous and driver control periods.
-
-
-
+  // Initializing Robot Configuration. DO NOT REMOVE!
+  vexcodeInit();
+  
     Competition.autonomous( autonomous );
     Competition.drivercontrol( usercontrol );
     
@@ -763,6 +709,5 @@ int main() {
     //Prevent main from exiting with an infinite loop.                        
     while(1) {
       vex::task::sleep(100);//Sleep the task for a short amount of time to prevent wasted resources.
-    }    
-       
+    }
 }
