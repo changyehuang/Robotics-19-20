@@ -314,7 +314,7 @@ void pidRamp(){
 pidLastError  = 0;
 pidIntegral   = 0;
 
-while(fabs(pidError) > 0.03){
+while(fabs(pidError) > 0.03 && !controller1.ButtonA.pressing()){
 
 encoderValue = -RAMP.rotation(vex::rotationUnits (rev));
 
@@ -375,7 +375,7 @@ void pidRamp2(){
 pidLastError  = 0;
 pidIntegral   = 0;
 
-while(fabs(pidError) > 0.03){
+while(fabs(pidError) > 0.03 && !controller1.ButtonA.pressing()){
 
 encoderValue = -RAMP.rotation(vex::rotationUnits (rev));
 
